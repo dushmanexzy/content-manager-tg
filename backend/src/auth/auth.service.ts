@@ -128,7 +128,6 @@ export class AuthService {
       if (/^-?\d+$/.test(potentialChatId)) {
         chatId = potentialChatId;
         chatTitle = undefined;
-        this.logger.log(`Using start_param as chatId: ${chatId}`);
       } else {
         throw new UnauthorizedException(
           'Chat data not found. Mini App must be opened from a group.',
@@ -206,8 +205,6 @@ export class AuthService {
     if (process.env.NODE_ENV === 'production') {
       throw new UnauthorizedException('Mock auth not allowed in production');
     }
-
-    this.logger.log('Using mock authentication for development');
 
     // Mock данные
     const mockTelegramId = '123456789';

@@ -39,11 +39,9 @@ export function useAuth() {
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      // Получаем токен
       const authResponse = await apiClient.auth(initData);
       apiClient.setToken(authResponse.accessToken);
 
-      // Получаем данные пользователя и права
       const meResponse = await apiClient.getMe();
 
       setState({

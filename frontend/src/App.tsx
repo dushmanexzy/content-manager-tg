@@ -12,7 +12,7 @@ import type { Section, SearchResult } from './types';
 import './App.css';
 
 function App() {
-  const { webApp, initData, isReady, colorScheme, deepLinkSectionId, isMock } = useTelegram();
+  const { webApp, initData, isReady, colorScheme, deepLinkSectionId } = useTelegram();
   const { isAuthenticated, user, permissions, loading: authLoading, error: authError, login } = useAuth();
   const navigation = useNavigation(webApp);
 
@@ -27,15 +27,11 @@ function App() {
 
   // Аутентификация при готовности
   useEffect(() => {
-    console.log('[Auth] Check:', { isReady, initData, isAuthenticated, authLoading, authAttempted, isMock });
     if (isReady && initData && !isAuthenticated && !authLoading && !authAttempted) {
-      console.log('[Auth] Starting authentication...', { initData: initData.slice(0, 20), isMock });
       setAuthAttempted(true);
-      login(initData).then(success => {
-        console.log('[Auth] Result:', success);
-      });
+      login(initData);
     }
-  }, [isReady, initData, isAuthenticated, authLoading, authAttempted, login, isMock]);
+  }, [isReady, initData, isAuthenticated, authLoading, authAttempted, login]);
 
   // Загрузка разделов после авторизации
   useEffect(() => {
