@@ -1,0 +1,70 @@
+.swipeable-container {
+  display: flex;
+  gap: 4px;
+}
+
+.swipeable-content {
+  flex: 1;
+  min-width: 0;
+  transition: flex 0.2s ease-out;
+}
+
+.swipeable-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.swipeable-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.swipeable-action:active {
+  opacity: 0.7;
+}
+
+.swipeable-action.edit {
+  background: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-text-color, #fff);
+}
+
+.swipeable-action.delete {
+  background: var(--tg-theme-destructive-text-color, #e53935);
+  color: #fff;
+}
+
+.swipeable-action svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Desktop hover support */
+@media (hover: hover) and (pointer: fine) {
+  .swipeable-content {
+    transition: flex 0.2s ease-out;
+  }
+
+  .swipeable-actions {
+    width: 0 !important;
+    transition: width 0.2s ease-out !important;
+  }
+
+  .swipeable-container:hover .swipeable-actions {
+    width: 92px !important;
+  }
+
+  .swipeable-action:hover {
+    opacity: 0.85;
+  }
+}

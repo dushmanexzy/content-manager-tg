@@ -1,0 +1,19 @@
+.section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.section-list-empty p {
+  color: var(--tg-theme-hint-color, #999999);
+  margin: 0;
+}

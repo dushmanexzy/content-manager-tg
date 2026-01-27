@@ -1,0 +1,95 @@
+/* ============================================================================
+   Bottom Actions — нижние кнопки добавления
+   ============================================================================ */
+
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: var(--tg-theme-bg-color, #fff);
+  border-top: 1px solid var(--tg-theme-hint-color, rgba(0, 0, 0, 0.1));
+  display: flex;
+  gap: 12px;
+  z-index: 50;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Вариант с двумя кнопками (50/50) */
+.bottom-actions-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Кнопка */
+.bottom-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-text-color, #fff);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(51, 144, 236, 0.2);
+}
+
+.bottom-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(51, 144, 236, 0.3);
+}
+
+.bottom-action-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 6px rgba(51, 144, 236, 0.2);
+}
+
+/* Полная кнопка (на главной) */
+.bottom-action-full {
+  width: 100%;
+}
+
+.bottom-action-btn svg {
+  flex-shrink: 0;
+}
+
+/* ============================================================================
+   Адаптивность
+   ============================================================================ */
+
+@media (max-width: 360px) {
+  .bottom-actions {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .bottom-action-btn {
+    min-height: 48px;
+    font-size: 15px;
+    padding: 10px 16px;
+    gap: 6px;
+  }
+
+  .bottom-action-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Добавляем отступ снизу у основного контента, чтобы он не перекрывался кнопками */
+.app-main {
+  padding-bottom: 88px; /* Высота кнопок + отступы */
+}
+
+@media (max-width: 360px) {
+  .app-main {
+    padding-bottom: 80px;
+  }
+}

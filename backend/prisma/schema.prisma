@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  // url задаётся в prisma.config.ts через DATABASE_URL
+}
+
+// ============================================================================
+// User — кэш данных пользователя Telegram
+// Используется для отображения "кто создал" и хранения базовой информации
+// Права доступа НЕ хранятся здесь — проверяются через Telegram API
+// ============================================================================
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId String   @unique // Telegram user ID (строка для больших чисел)
+  username   String? // @username в Telegram
+  firstName  String?
+  lastName   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Контент, созданный пользователем
+  sections Section[]
+  items    Item[]
+}
+
+// ============================================================================
+// Space — пространство, привязанное к Telegram-группе
+// Создаётся автоматически при первом открытии Mini App из группы
+// Одна группа = один Space (по chatId)
+// ============================================================================
+model Space {
+  id        Int      @id @default(autoincrement())
+  chatId    String   @unique // Telegram chat_id группы
+  title     String? // Название группы (кэш для отображения)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Контент пространства
+  sections Section[]
+  items    Item[]
+}
+
+// ============================================================================
+// Section — раздел с поддержкой неограниченной вложенности
+// parentId = null означает корневой раздел
+// Каскадное удаление: удаление раздела удаляет всех потомков и Item внутри
+// ============================================================================
+model Section {
+  id        Int      @id @default(autoincrement())
+  title     String // Название раздела
+  order     Int      @default(0) // Порядок сортировки среди siblings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Принадлежность к пространству (обязательно)
+  space   Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  spaceId Int
+
+  // Вложенность: self-relation для дерева разделов
+  parent   Section?  @relation("SectionHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId Int? // null = корневой раздел
+  children Section[] @relation("SectionHierarchy")
+
+  // Контент внутри раздела
+  items Item[]
+
+  // Автор раздела (для отображения и проверки прав на удаление)
+  createdBy   User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdById Int?
+
+  // Индекс для быстрого получения разделов по space и parent
+  @@index([spaceId, parentId])
+}
+
+// ============================================================================
+// Item — единица контента внутри раздела
+// Типы: text (заметка), link (ссылка), file (файл), image (изображение)
+// Файлы хранятся в Telegram (fileId), не на нашем сервере
+// ============================================================================
+model Item {
+  id        Int      @id @default(autoincrement())
+  type      String // 'text' | 'link' | 'file' | 'image'
+  title     String? // Название (опционально)
+  content   String? // Текст заметки или URL ссылки
+  fileId    String? // Telegram file_id для файлов/изображений
+  fileName  String? // Оригинальное имя файла
+  fileSize  Int? // Размер в байтах
+  mimeType  String? // MIME-тип (image/jpeg, application/pdf, etc.)
+  order     Int      @default(0) // Порядок сортировки
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Принадлежность к пространству (для быстрого поиска)
+  space   Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  spaceId Int
+
+  // Принадлежность к разделу
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId Int
+
+  // Автор контента
+  createdBy   User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdById Int?
+
+  // Индексы для быстрого доступа
+  @@index([spaceId])
+  @@index([sectionId])
+}

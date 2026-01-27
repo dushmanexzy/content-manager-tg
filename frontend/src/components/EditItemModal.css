@@ -1,0 +1,39 @@
+.edit-item-modal .modal-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-item-icon {
+  font-size: 1.2em;
+}
+
+.edit-item-file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.edit-item-file-icon {
+  font-size: 24px;
+}
+
+.edit-item-file-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.edit-item-file-name {
+  font-weight: 500;
+  color: var(--tg-theme-text-color, #000);
+}
+
+.edit-item-file-hint {
+  font-size: 12px;
+  color: var(--tg-theme-hint-color, #999);
+}

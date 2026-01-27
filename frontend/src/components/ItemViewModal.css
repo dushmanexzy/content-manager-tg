@@ -1,0 +1,208 @@
+/* ItemViewModal использует базовые стили из AddSectionModal.css */
+
+.item-view-modal {
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-view-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-view-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.item-view-icon {
+  font-size: 24px;
+}
+
+.item-view-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Текстовая заметка */
+.item-view-text p {
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--tg-theme-text-color, #000000);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Ссылка */
+.item-view-link-preview {
+  padding: 16px;
+  background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.item-view-link-domain {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tg-theme-link-color, #3390ec);
+  margin-bottom: 4px;
+}
+
+.item-view-link-url {
+  display: block;
+  font-size: 13px;
+  color: var(--tg-theme-hint-color, #999999);
+  word-break: break-all;
+}
+
+/* Изображение */
+.item-view-image {
+  text-align: center;
+}
+
+.item-view-img {
+  max-width: 100%;
+  max-height: 50vh;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  object-fit: contain;
+}
+
+/* Файл */
+.item-view-file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.item-view-file-icon {
+  font-size: 32px;
+}
+
+.item-view-file-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-view-file-name {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--tg-theme-text-color, #000000);
+  word-break: break-word;
+}
+
+.item-view-file-type {
+  display: block;
+  font-size: 13px;
+  color: var(--tg-theme-hint-color, #999999);
+  margin-top: 2px;
+}
+
+.item-view-file-size {
+  display: block;
+  font-size: 12px;
+  color: var(--tg-theme-hint-color, #999999);
+  margin-top: 2px;
+}
+
+/* Кнопки действий */
+.item-view-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-view-action {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.item-view-action.primary {
+  color: var(--tg-theme-button-text-color, #ffffff);
+  background: var(--tg-theme-button-color, #3390ec);
+}
+
+.item-view-action.secondary {
+  color: var(--tg-theme-link-color, #3390ec);
+  background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+}
+
+.item-view-action:hover {
+  opacity: 0.9;
+}
+
+.item-view-action:active {
+  opacity: 0.8;
+}
+
+.item-view-placeholder {
+  text-align: center;
+  color: var(--tg-theme-hint-color, #999999);
+  padding: 24px;
+}
+
+.item-view-loading {
+  text-align: center;
+  color: var(--tg-theme-hint-color, #999999);
+  padding: 24px;
+  font-style: italic;
+}
+
+/* Футер с кнопками редактирования/удаления */
+.item-view-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+}
+
+.item-view-footer-action {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.item-view-footer-action.edit {
+  color: var(--tg-theme-link-color, #3390ec);
+  background: var(--tg-theme-secondary-bg-color, #f5f5f5);
+}
+
+.item-view-footer-action.delete {
+  color: #ff3b30;
+  background: rgba(255, 59, 48, 0.1);
+}
+
+.item-view-footer-action:hover {
+  opacity: 0.9;
+}
+
+.item-view-footer-action:active {
+  opacity: 0.7;
+}

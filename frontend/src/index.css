@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+/* Сброс стилей для кнопок */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+/* Сброс стилей для инпутов */
+input, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Отключение выделения для интерактивных элементов */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Плавная прокрутка */
+html {
+  scroll-behavior: smooth;
+}

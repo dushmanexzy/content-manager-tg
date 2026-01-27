@@ -1,0 +1,45 @@
+.section-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-page-title {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.section-page-content {
+  flex: 1;
+}
+
+.section-page-block {
+  margin-bottom: 24px;
+}
+
+.section-page-subtitle {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tg-theme-hint-color, #999999);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-page-empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.section-page-empty-message p {
+  color: var(--tg-theme-hint-color, #999999);
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Старые стили кнопок удалены - теперь используется BottomActions компонент */
