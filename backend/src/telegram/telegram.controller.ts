@@ -36,7 +36,12 @@ export class TelegramController {
     // Обработка сообщений
     const message = update?.message;
     if (message && message.chat && message.from) {
-      await this.handleMessage(message);
+      // Проверяем, есть ли новые участники
+      if (message.new_chat_members && message.new_chat_members.length > 0) {
+        await this.handleNewChatMembers(message.chat, message.new_chat_members);
+      } else {
+        await this.handleMessage(message);
+      }
     }
 
     return { ok: true };
@@ -71,11 +76,15 @@ export class TelegramController {
       this.logger.log(`Space created for chat ${chatId} (${chatTitle})`);
 
       // Отправляем приветственное сообщение
-      const webAppUrl = process.env.MINI_APP_URL;
-      const keyboard = webAppUrl
+      const botUsername = process.env.TELEGRAM_BOT_USERNAME;
+      const appLink = botUsername
+        ? `https://t.me/${botUsername}/app?startapp=${chatId}`
+        : null;
+
+      const keyboard = appLink
         ? {
             inline_keyboard: [
-              [{ text: '📱 Открыть приложение', web_app: { url: webAppUrl } }],
+              [{ text: '📱 Открыть приложение', url: appLink }],
             ],
           }
         : undefined;
@@ -93,6 +102,45 @@ export class TelegramController {
       await this.spaceService.deleteByChatId(chatId);
       this.logger.log(`Space deleted for chat ${chatId}`);
     }
+  }
+
+  /**
+   * Приветствие новых участников группы
+   */
+  private async handleNewChatMembers(chat: any, newMembers: any[]) {
+    // Игнорируем ботов
+    const humans = newMembers.filter((m) => !m.is_bot);
+    if (humans.length === 0) return;
+
+    // Работаем только с группами
+    if (chat.type !== 'group' && chat.type !== 'supergroup') return;
+
+    const botUsername = process.env.TELEGRAM_BOT_USERNAME;
+    if (!botUsername) return;
+
+    const names = humans.map((m) => m.first_name).join(', ');
+    const appLink = `https://t.me/${botUsername}/app?startapp=${chat.id}`;
+
+    const welcomeText = `Привет, ${names}! 👋
+
+📚 <b>Content Manager</b> — приложение для организации информации в группе.
+
+<b>Что можно делать:</b>
+• Создавать разделы и подразделы
+• Добавлять текст, ссылки, изображения, файлы
+• Искать по всему контенту
+• Редактировать и удалять записи
+
+Нажмите кнопку ниже, чтобы открыть приложение:`;
+
+    const keyboard = {
+      inline_keyboard: [[{ text: '📱 Открыть приложение', url: appLink }]],
+    };
+
+    await this.telegramService.sendMessage(chat.id, welcomeText, {
+      reply_markup: keyboard,
+      parse_mode: 'HTML',
+    });
   }
 
   /**
@@ -170,18 +218,26 @@ export class TelegramController {
    * Команда /help в группе
    */
   private async handleGroupHelpCommand(chatId: number) {
-    const helpText = `📖 *Как использовать бота:*
+    const helpText = `📚 <b>Content Manager — справка</b>
 
-1. Нажмите кнопку "Открыть приложение" или используйте /start
-2. В приложении создавайте разделы и добавляйте контент
-3. Все участники группы видят общий контент
+<b>Что можно делать:</b>
+• Создавать разделы и подразделы (неограниченная вложенность)
+• Добавлять контент: текст, ссылки, изображения, файлы
+• Искать по всему содержимому
+• Редактировать и удалять записи
 
-*Команды:*
-/start - Открыть приложение
-/help - Показать справку`;
+<b>Права доступа:</b>
+• Администраторы группы — полный доступ
+• Участники — только просмотр
+
+<b>Команды:</b>
+/start — открыть приложение
+/help — показать эту справку
+
+При добавлении контента уведомление со ссылкой отправляется в группу.`;
 
     await this.telegramService.sendMessage(chatId, helpText, {
-      parse_mode: 'Markdown',
+      parse_mode: 'HTML',
     });
   }
 
