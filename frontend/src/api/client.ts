@@ -12,7 +12,12 @@ import type {
   QuickSearchResult,
 } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Определяем API URL:
+// - На localhost используем пустую строку (Vite proxy перенаправит на бэкенд)
+// - На внешних хостах (cloudflared, production) используем VITE_API_URL
+const isLocalhost = typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const API_URL = isLocalhost ? '' : (import.meta.env.VITE_API_URL || '');
 
 /**
  * API клиент для взаимодействия с бэкендом
@@ -41,7 +46,9 @@ class ApiClient {
       (headers as Record<string, string>)['Authorization'] = `Bearer ${this.token}`;
     }
 
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const url = `${API_URL}${endpoint}`;
+
+    const response = await fetch(url, {
       ...options,
       headers,
     });
