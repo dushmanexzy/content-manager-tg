@@ -109,14 +109,9 @@ function createMockWebApp(): TelegramWebApp {
         updateMockUI();
       },
     },
-    ready: () => {
-      console.log('[Mock] WebApp ready');
-    },
-    expand: () => {
-      console.log('[Mock] WebApp expanded');
-    },
+    ready: () => {},
+    expand: () => {},
     close: () => {
-      console.log('[Mock] WebApp close requested');
       alert('WebApp close() called - в реальном Telegram окно закроется');
     },
     showAlert: (message: string, callback?: () => void) => {
@@ -148,15 +143,9 @@ function createMockWebApp(): TelegramWebApp {
       }
     },
     HapticFeedback: {
-      impactOccurred: (style) => {
-        console.log(`[Mock] Haptic impact: ${style}`);
-      },
-      notificationOccurred: (type) => {
-        console.log(`[Mock] Haptic notification: ${type}`);
-      },
-      selectionChanged: () => {
-        console.log('[Mock] Haptic selection changed');
-      },
+      impactOccurred: () => {},
+      notificationOccurred: () => {},
+      selectionChanged: () => {},
     },
   };
 
@@ -217,18 +206,23 @@ export function useTelegram() {
       // Реальный Telegram WebApp с данными
       tg.ready();
       tg.expand();
+
+      // Отключаем свайп для сворачивания приложения
+      if (tg.disableVerticalSwipes) {
+        tg.disableVerticalSwipes();
+      }
+
       setWebApp(tg);
       setIsReady(true);
     } else if (isDev) {
-      // Dev режим — создаём mock (даже если window.Telegram существует, но без initData)
-      console.log('[Mock] Running in development mode without Telegram (or empty initData)');
+      // Dev режим — создаём mock
       if (!mockRef.current) {
         mockRef.current = createMockWebApp();
       }
       setWebApp(mockRef.current);
       setIsReady(true);
     } else if (tg) {
-      // Production без initData — всё равно инициализируем (покажет ошибку авторизации)
+      // Production без initData — всё равно инициализируем
       tg.ready();
       tg.expand();
       setWebApp(tg);

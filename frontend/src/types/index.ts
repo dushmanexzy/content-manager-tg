@@ -221,6 +221,8 @@ export interface TelegramWebApp {
   isExpanded: boolean;
   viewportHeight: number;
   viewportStableHeight: number;
+  platform?: string;
+  version?: string;
   MainButton: {
     text: string;
     color: string;
@@ -248,6 +250,9 @@ export interface TelegramWebApp {
   ready: () => void;
   expand: () => void;
   close: () => void;
+  // Отключение вертикальных свайпов (сворачивание приложения)
+  disableVerticalSwipes?: () => void;
+  enableVerticalSwipes?: () => void;
   showAlert: (message: string, callback?: () => void) => void;
   showConfirm: (message: string, callback?: (confirmed: boolean) => void) => void;
   showPopup: (
