@@ -357,7 +357,7 @@ export class ApiController {
 
     // Deep link на раздел
     const botUsername = process.env.TELEGRAM_BOT_USERNAME || 'your_bot';
-    const deepLink = `https://t.me/${botUsername}/app?startapp=section_${sectionId}`;
+    const deepLink = `https://t.me/${botUsername}/app?startapp=${space.chatId}_section_${sectionId}`;
     const replyMarkup = {
       inline_keyboard: [[
         { text: '📂 Открыть в приложении', url: deepLink }
