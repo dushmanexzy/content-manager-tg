@@ -30,6 +30,9 @@ jobs:
             # ============================================
             cd /var/www/tg-app/backend
 
+            # Clean node_modules to avoid ENOTEMPTY errors
+            rm -rf node_modules
+
             # Create .env (before prisma generate)
             cat > .env << 'EOF'
             DATABASE_URL="file:./prisma/prod.db"
@@ -61,6 +64,9 @@ jobs:
             # Frontend
             # ============================================
             cd /var/www/tg-app/frontend
+
+            # Clean node_modules to avoid ENOTEMPTY errors
+            rm -rf node_modules
 
             # Install dependencies
             npm ci
