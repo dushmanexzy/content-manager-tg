@@ -24,12 +24,8 @@ jobs:
 
             # Backend
             cd /var/www/tg-app/backend
-            npm ci --production=false
-            npx prisma generate
-            npx prisma migrate deploy
-            npm run build
 
-            # Create/update .env
+            # Create .env FIRST (before prisma generate)
             cat > .env << 'EOF'
             DATABASE_URL="file:./prisma/prod.db"
             TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
@@ -39,6 +35,11 @@ jobs:
             NODE_ENV="production"
             PORT=3000
             EOF
+
+            npm ci --omit=dev
+            npx prisma generate
+            npx prisma migrate deploy
+            npm run build
 
             # Restart backend
             pm2 restart tg-backend || pm2 start dist/main.js --name tg-backend
