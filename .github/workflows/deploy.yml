@@ -36,7 +36,7 @@ jobs:
             PORT=3000
             EOF
 
-            npm ci --omit=dev
+            npm ci
             npx prisma generate
             npx prisma migrate deploy
             npm run build
