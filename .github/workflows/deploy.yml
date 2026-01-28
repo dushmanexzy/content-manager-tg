@@ -29,7 +29,7 @@ jobs:
             cat > .env << 'EOF'
             DATABASE_URL="file:./prisma/prod.db"
             TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
-            TELEGRAM_BOT_USERNAME="content_manager_tg_bot"
+            TELEGRAM_BOT_USERNAME="my_content_master_bot"
             JWT_SECRET="${{ secrets.JWT_SECRET }}"
             MINI_APP_URL="https://app.exzyz.org"
             NODE_ENV="production"
