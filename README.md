@@ -160,10 +160,26 @@ VITE_API_URL=https://backend-tunnel.trycloudflare.com
 
 ---
 
+## Production
+
+Приложение развёрнуто на VPS:
+
+| Компонент | URL |
+|-----------|-----|
+| Frontend | https://app.exzyz.org |
+| Backend | https://api.exzyz.org |
+| Telegram бот | @my_content_master_bot |
+
+**Автодеплой:** При пуше в `main` запускается GitHub Actions.
+
+Подробнее в [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md).
+
+---
+
 ## Архитектура
 
-- **Frontend:** React 18, TypeScript, Vite, CSS Modules
-- **Backend:** NestJS, Prisma ORM, SQLite, JWT
+- **Frontend:** React 19, TypeScript, Vite, CSS Modules
+- **Backend:** NestJS 11, Prisma ORM, SQLite, JWT
 - **API:** REST, авторизация через Telegram initData
 
 Подробнее в [docs/](./docs/).
