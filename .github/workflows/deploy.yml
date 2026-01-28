@@ -42,7 +42,7 @@ jobs:
             npm run build
 
             # Restart backend
-            pm2 restart tg-backend || pm2 start dist/main.js --name tg-backend
+            pm2 restart tg-backend || pm2 start dist/src/main.js --name tg-backend
 
             # Frontend
             cd /var/www/tg-app/frontend
