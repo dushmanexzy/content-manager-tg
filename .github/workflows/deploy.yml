@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Deploy to VPS
@@ -16,16 +17,20 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 10m
           script: |
+            set -e
             cd /var/www/tg-app
 
             # Pull latest code
             git pull origin main
 
+            # ============================================
             # Backend
+            # ============================================
             cd /var/www/tg-app/backend
 
-            # Create .env FIRST (before prisma generate)
+            # Create .env (before prisma generate)
             cat > .env << 'EOF'
             DATABASE_URL="file:./prisma/prod.db"
             TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
@@ -36,25 +41,44 @@ jobs:
             PORT=3000
             EOF
 
+            # Install dependencies (with devDeps for build)
             npm ci
+
+            # Generate Prisma client and run migrations
             npx prisma generate
             npx prisma migrate deploy
+
+            # Build
             npm run build
+
+            # Remove devDependencies to save space
+            npm prune --production
 
             # Restart backend
             pm2 restart tg-backend || pm2 start dist/src/main.js --name tg-backend
 
+            # ============================================
             # Frontend
+            # ============================================
             cd /var/www/tg-app/frontend
+
+            # Install dependencies
             npm ci
 
             # Create .env for build
             echo 'VITE_API_URL=https://api.exzyz.org' > .env
 
+            # Build
             npm run build
 
-            # Copy to nginx serve directory
+            # Remove devDependencies to save space
+            npm prune --production
+
+            # Deploy to nginx directory
             rm -rf /var/www/tg-app-frontend
             cp -r dist /var/www/tg-app-frontend
 
+            # Save PM2 config
             pm2 save
+
+            echo "Deploy completed successfully!"
