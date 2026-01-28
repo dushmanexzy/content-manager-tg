@@ -75,9 +75,13 @@ export class SpaceService {
   }
 
   /**
-   * Удалить пространство по chat_id
+   * Удалить пространство по chat_id (если существует)
    */
   async deleteByChatId(chatId: string) {
+    const existing = await this.findByChatId(chatId);
+    if (!existing) {
+      return null;
+    }
     return this.prisma.space.delete({
       where: { chatId },
     });
